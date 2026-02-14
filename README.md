@@ -1,109 +1,115 @@
-# AskMyDocs
+# InsightPDF
 
-AskMyDocs is a document-understanding app that transforms static PDFs into interactive conversations using Retrieval-Augmented Generation (RAG). Upload any document, ask a question, and receive accurate, context-grounded answers powered by OpenAI’s language models and LangChain’s modular pipelines.
+InsightPDF is an advanced document-understanding application that transforms static PDF documents into interactive conversational interfaces using Retrieval-Augmented Generation (RAG). By leveraging LangChain's modular pipelines and OpenAI's large language models, InsightPDF provides context-grounded answers to user queries with high precision.
 
-Designed for students, researchers, knowledge workers, and anyone working with large or complex documents.
-
----
-
-## Features
-
-- Upload one or more PDFs (up to 200MB per file)
-- Combines semantic search with generative answering (RAG architecture)
-- "Smart Search Mode": hybrid keyword + embedding-based retrieval
-- Automatically generates follow-up questions after each query
-- Optional web fallback using SerpAPI when answer confidence is low
-- Downloadable chat history as a PDF
-- Supports OCR via Tesseract for scanned PDFs
-- Clean, dark-themed Streamlit UI
+This tool is optimized for academic research, professional data analysis, and technical documentation review.
 
 ---
 
-## Tech Stack
+## Key Features
 
-| Layer            | Tool/Library         | Purpose                                                  |
-|------------------|----------------------|----------------------------------------------------------|
-| UI               | Streamlit            | Frontend interface                                       |
-| QA Engine        | LangChain            | RAG pipeline, memory handling, and chaining              |
-| Language Model   | OpenAI API           | Answer generation, question refinement                   |
-| Embeddings       | OpenAIEmbeddings     | Vector representations for semantic search               |
-| PDF Processing   | PyPDF2, pdf2image     | Extracting text and converting pages for OCR             |
-| OCR              | Tesseract            | Optical character recognition for scanned PDFs           |
-| Web Search       | SerpAPI              | Fallback search for out-of-scope or incomplete answers   |
-
----
-
-## Architecture
-
-1. **PDF Upload & Preprocessing**
-   - Files are parsed using PyPDF2 and/or converted via pdf2image + Tesseract.
-   - Text is split into overlapping chunks using LangChain splitters.
-
-2. **Vector Indexing**
-   - Text chunks are embedded using OpenAIEmbeddings.
-   - A retriever (in-memory vector store) performs similarity-based retrieval.
-
-3. **RAG Pipeline**
-   - User questions are used to retrieve the most relevant chunks.
-   - Context is passed along with the question to an OpenAI model to generate the final answer.
-
-4. **Post-processing**
-   - Generated answers are shown in a styled UI.
-   - Follow-up suggestions are created via a secondary LLM prompt.
-   - Full chat history can be exported as a PDF.
-     
-![image](https://github.com/user-attachments/assets/b0ee0057-a3c4-4549-9cc5-05ada87aebec)
+- Multimodal PDF processing (supports uploads up to 200MB per file).
+- Advanced RAG architecture combining semantic search with generative synthesis.
+- "Smart Search Mode" utilizing hybrid keyword and embedding-based retrieval for increased accuracy.
+- Automated contextual follow-up question generation.
+- Intelligent web fallback integration via SerpAPI for out-of-scope queries.
+- Exportable chat history in standardized PDF format.
+- Support for Optical Character Recognition (OCR) via Tesseract for scanned documents.
+- Streamlined, high-performance dark-themed interface.
 
 ---
 
-## How to Run AskMyDocs Locally
+## Technical Architecture
 
-You can follow these step-by-step instructions to set up and run AskMyDocs on your local machine.
+| Component         | Technology           | Role                                                     |
+|-------------------|----------------------|----------------------------------------------------------|
+| User Interface    | Streamlit            | Frontend orchestration                                   |
+| QA Pipeline       | LangChain            | Chaining, memory management, and RAG logic               |
+| LLM Provider      | OpenAI API           | Generative answering and refinement                      |
+| Vector Embeddings | OpenAIEmbeddings     | High-dimensional semantic representation                 |
+| Document Parsing  | PyPDF2, pdf2image    | Text extraction and buffer management                    |
+| OCR Engine        | Tesseract            | Text recovery for scanned image-based PDFs               |
+| Web Search        | SerpAPI              | External knowledge augmentation                          |
 
-1. Clone the Repository
-   - First, clone the project from GitHub:
-   **git clone https://github.com/shruti25838/my-projects.git
-   cd my-projects/askmydocs**
+---
 
-2. Create a Python Virtual Environment (Recommended)
-   - It's best to isolate your dependencies using a virtual environment:
-   **python -m venv venv
-   source venv/bin/activate**   # On Windows use: venv\Scripts\activate
+## System Workflow
 
-3. Install Python Dependencies
-   - Install all required Python libraries:
-   **pip install -r requirements.txt**
+1. **Ingestion and Preprocessing**
+   - Documents are parsed and converted using standardized extraction libraries.
+   - Text is segmented into optimized chunks using recursive splitters to preserve context.
 
-4. Install System Dependencies
-   - To support OCR (for scanned PDFs), install the following tools:
+2. **Vectorization and Indexing**
+   - Chunks are transformed into vector embeddings.
+   - A high-performance retriever enables efficient similarity-based search.
 
-   macOS:
-   **brew install poppler tesseract**
+3. **Inference and Retrieval**
+   - Queries trigger a retrieval pass to identify the most relevant document segments.
+   - Contextual data is synthesized with the user query and passed to the primary model for final response generation.
 
-   Ubuntu/Debian:
-   **sudo apt update
-   sudo apt install poppler-utils tesseract-ocr**
+4. **Post-Processing**
+   - Responses are rendered within the secure UI.
+   - Predictive analysis suggests relevant follow-up questions.
+   - Full session data is available for export as a PDF document.
 
-   Windows:
-   Install Tesseract OCR (Windows)
-   Install Poppler for Windows
+---
 
-   - Make sure to add both to your system PATH.
+## Installation and Deployment
 
-6. Add Your API Keys Securely
-   - To use OpenAI and SerpAPI, you must provide API keys. You can do this in one of two ways:
+Follow these instructions to deploy InsightPDF in a local environment.
 
-   - Create a .env file in the askmydocs/ directory:
+### 1. Repository Initialization
+Clone the repository and navigate to the project directory:
+```bash
+git clone https://github.com/shruti25838/my-projects.git
+cd my-projects/askmydocs
+```
 
-      - OPENAI_API_KEY=your-openai-key
-      - SERPAPI_API_KEY=your-serpapi-key
-      
+### 2. Environment Configuration
+It is recommended to use a virtual environment for dependency isolation:
+```bash
+python -m venv venv
+# Windows execution policy
+venv\Scripts\activate
+```
 
-6. Run the Streamlit App
-   - Now you're ready to launch the app:
-   **streamlit run app.py**
-   - Your browser will open automatically. If not, visit http://localhost:8501 manually.
-  
-   ![image](https://github.com/user-attachments/assets/08b66eec-78cb-47f6-8eb6-8ae036008103)
+### 3. Dependency Installation
+Install the necessary Python packages:
+```bash
+pip install -r requirements.txt
+```
+
+### 4. System Requisites
+For OCR support, ensure the following system-level dependencies are installed:
+
+**macOS:**
+```bash
+brew install poppler tesseract
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install poppler-utils tesseract-ocr
+```
+
+**Windows:**
+- Install Tesseract OCR for Windows.
+- Install Poppler for Windows.
+- Ensure both are included in the system's PATH variable.
+
+### 5. API Authentication
+External service authentication requires valid API keys. Create a `.env` file in the root directory:
+```env
+OPENAI_API_KEY=your_key_here
+SERPAPI_API_KEY=your_key_here
+```
+
+### 6. Application Execution
+Launch the application using the Streamlit CLI:
+```bash
+streamlit run app.py
+```
+The application will be accessible at `http://localhost:8501`.
 
 

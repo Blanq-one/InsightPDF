@@ -18,7 +18,7 @@ from langchain.utilities import SerpAPIWrapper
 
 load_dotenv()
 
-st.set_page_config(page_title="AskMyDocs", page_icon="📄", layout="wide")
+st.set_page_config(page_title="InsightPDF", layout="wide")
 
 # ----- CSS Styling -----
 st.markdown("""
@@ -76,10 +76,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ----- Title -----
-st.title("📄 AskMyDocs - Chat with Your PDFs")
+st.title("InsightPDF - Chat with Your PDFs")
 
 # ----- Sidebar Settings -----
-st.sidebar.title("Settings")
+st.sidebar.title("Application Settings")
 model_choice = st.sidebar.selectbox("Choose Model", ["gpt-3.5-turbo-16k", "gpt-4"])
 max_tokens = st.sidebar.slider("Max tokens", 100, 4000, 800)
 temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.3)
@@ -111,7 +111,7 @@ def get_similar_questions(user_question):
         response = chat(prompt).content.strip()
         return [q.strip("\u2022- \n") for q in response.split("\n") if q.strip()]
     except Exception as e:
-        return [f"⚠️ Could not generate suggestions: {e}"]
+        return [f"Could not generate suggestions: {e}"]
 
 search = SerpAPIWrapper()
 search_tool = Tool(name="Web Search", func=search.run, description="Search for information online")
@@ -128,7 +128,7 @@ def generate_chat_pdf(chat_history):
     c = canvas.Canvas(buffer, pagesize=letter)
     text = c.beginText(40, 750)
     text.setFont("Helvetica", 11)
-    text.textLine("AskMyDocs Chat History")
+    text.textLine("InsightPDF Chat History")
     text.textLine("========================")
     for i, (q, a) in enumerate(chat_history):
         text.textLine(f"\nQ{i+1}: {q}")
@@ -182,7 +182,7 @@ if pdfs:
                         answer = f"{llm_answer}"
 
                     except Exception as e:
-                        answer = f"⚠️ Error: {e}"
+                        answer = f"Error: {e}"
 
                     st.session_state.chat_history.append((question, answer))
                 st.session_state.prefill = ""
